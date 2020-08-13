@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="465.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Client_IO">
+   <children>
+      <ListView fx:id="ClientList" layoutX="16.0" layoutY="54.0" prefHeight="355.0" prefWidth="282.0" />
+      <ListView fx:id="ServerList" layoutX="380.0" layoutY="54.0" prefHeight="355.0" prefWidth="282.0" />
+      <Button fx:id="toClient" layoutX="314.0" layoutY="79.0" mnemonicParsing="false" text="&lt;&lt;&lt;&lt;" />
+      <Button fx:id="toServer" layoutX="314.0" layoutY="114.0" mnemonicParsing="false" text="&gt;&gt;&gt;&gt;" />
+      <TextField fx:id="textArea" layoutX="14.0" layoutY="424.0" prefHeight="26.0" prefWidth="518.0" />
+      <Button fx:id="send" layoutX="539.0" layoutY="424.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="127.0" text="Send" />
+      <ComboBox fx:id="Menu" layoutX="16.0" layoutY="14.0" prefHeight="26.0" prefWidth="86.0" promptText="Menu" />
+   </children>
+</AnchorPane>
