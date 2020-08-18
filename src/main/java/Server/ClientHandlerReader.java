@@ -1,6 +1,7 @@
 package Server;
 
 import Client.AuthList_lite;
+import Client.UserAuth;
 import Handler.FielMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -9,6 +10,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import javax.swing.text.html.ListView;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,24 +19,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
 
     private AuthList_lite user;
     private String userName;
     private LinkedList<String> serverList = new LinkedList<>();
+    private LinkedList<String> list = new LinkedList<>();
     private Path path;
+    private UserAuth userAuth;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("____________________________________");
-        System.out.println("Клиент " + ctx.name() + " подключился");
-        File dir = new File("src/main/resources/ServerFiles/max");
-        for (String file : Objects.requireNonNull(dir.list())) {
-            serverList.add(file);
-
+        Path pathAuth = Paths.get("src/main/resources/UsersData/UData.txt");
+        try {
+            File file = new File("src/main/resources/UsersData/UData.txt");
+            FileReader fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
+            String line = reader.readLine();
+            while (line != null) {
+                list.add(line);
+                line = reader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        ctx.writeAndFlush(serverList);
     }
 
         @Override
@@ -61,19 +73,28 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
             Path userDir = Paths.get("src/main/resources/ServerFiles/" + userName);
             if (Files.notExists(userDir)) {
                 Files.createDirectory(userDir);
+
                 System.out.println("Библиотека пользователя создана");
                 System.out.println("____________________________________");
             } else {
                 System.out.println("Библиотека пользователя найдена");
                 System.out.println("____________________________________");
             }
+            System.out.println("____________________________________");
+            System.out.println("Клиент " + userName + " подключился");
+            File dir = new File("src/main/resources/ServerFiles/" + userName);
+            for (String file : Objects.requireNonNull(dir.list())) {
+                serverList.add(file);
+
+            }
+            ctx.writeAndFlush(serverList);
         } else if (msg instanceof String) {
             String message = msg.toString();
             if (message.startsWith("/download")) {
                 //_____________________DOWNLOAD_______________________________
                 System.out.println("Команда от пользователя " + userName + ": " + message);
                 String[] arrFile = message.split(" ");
-                Path path = Paths.get("src/main/resources/ServerFiles/" + "max" + "/" + arrFile[1]);
+                Path path = Paths.get("src/main/resources/ServerFiles/" + userName + "/" + arrFile[1]);
                 FielMessage fileMsg = new FielMessage();
                 FileInputStream input = new FileInputStream(path.toFile());
                 fileMsg.setFileName(path.getFileName().toString());
@@ -94,12 +115,12 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
                 //-----------------------DELETE------------------------------
             } else if (message.startsWith("/upload")) {
                 //-----------------------UPLOAD P1------------------------------
-                System.out.println("Команда от пользователя " + "max" + ": " + message);
+                System.out.println("Команда от пользователя " + userName + ": " + message);
                 String[] arrFile = message.split(" ");
-                path = Paths.get("src/main/resources/ServerFiles/" + "max" + "/" + arrFile[1]);
+                path = Paths.get("src/main/resources/ServerFiles/" + userName + "/" + arrFile[1]);
             } else if(message.startsWith("/refresh")) {
                 serverList.clear();
-                File dir = new File("src/main/resources/ServerFiles/max");
+                File dir = new File("src/main/resources/ServerFiles/" + userName);
                 for (String file : Objects.requireNonNull(dir.list())) {
                     serverList.add(file);
 
@@ -115,6 +136,21 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
             Files.write(path, file.getFileByte(), StandardOpenOption.APPEND);
             System.out.println("Готово! Файл загружен на сервер");
             //------------------------UPLOAD P2-----------------------------------
+        } else if (msg instanceof UserAuth){
+            userAuth = (UserAuth) msg;
+            for(String all: list){
+                String[] namepass = all.split(" ");
+                if(namepass[0].equals(userAuth.getName())){
+                    if(namepass[1].equals(userAuth.getPass())){
+                        System.out.println("Успешная аутентификация");
+                        ctx.writeAndFlush(userAuth);
+                    }
+                } else {
+                    System.out.println("Пользователь не найден");
+                }
+
+            }
+
         } else {
             String message = msg.toString();
             System.out.println("Сообщение от пользователя " + userName + ": " + message);
