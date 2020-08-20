@@ -1,4 +1,6 @@
 import Client.AuthList_lite;
+import Client.Common;
+import Client.UserAuth;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ public class Authentification implements Initializable {
     public TextField name;
     public PasswordField pass;
     public Button auth;
+    public Stage stage = new Stage();
 
     private static Socket clientSocket;
     private static BufferedReader reader;
@@ -48,32 +51,24 @@ public class Authentification implements Initializable {
 
     }
 
-    public void sendCommand(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void sendCommand(javafx.event.ActionEvent actionEvent) throws Exception {
         String s1 = name.getText();
         String p = pass.getText();
-        for (AuthList_lite list : users) {
-            String s = list.getName();
-            if (s.equalsIgnoreCase(s1)) {
-                System.out.println("Введите пароль:");
-                String p1 = list.getPass();
-                if (p.equalsIgnoreCase(p1)) {
-                    System.out.println("Поздравляем, вы успешно залогинились");
-                    user = list;
-                    os.writeObject(list);
-                    try {
-                        Stage stage = new Stage();
-                        controller.start(stage, clientSocket, user);
-                    } catch (Exception e){
-                        System.out.println("ОШИБКА ПРИ СОЗДАНИИ КОНТРОЛЛЕРА");
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.println("Неверно введён пароль");
-                }
+        UserAuth auth = new UserAuth();
+        auth.setName(s1); auth.setPass(p);
+        os.writeObject(auth);
+        os.flush();
+        auth = null;
+        while(auth == null){
+            auth = (UserAuth) is.readObject();
+        }
+        if(auth != null){
+            user = new AuthList_lite(auth.getName(), auth.getPass());
+            Common.user = user;
+            Common.socket = clientSocket;
+            os.writeObject(user);
+            controller.start(stage);
 
-            } else {
-                System.out.println("Такого логина не существует");
-            }
         }
     }
 }

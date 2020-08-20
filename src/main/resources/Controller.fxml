@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="575.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Client_IO">
+<AnchorPane prefHeight="575.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Client_IO">
    <children>
       <ListView fx:id="ClientList" layoutX="16.0" layoutY="54.0" prefHeight="355.0" prefWidth="282.0" />
-      <ListView fx:id="ServerList" layoutX="409.0" layoutY="54.0" prefHeight="355.0" prefWidth="282.0" />
-      <Button fx:id="toClient" layoutX="314.0" layoutY="79.0" mnemonicParsing="false" onAction="#toClient" text="&lt;&lt;&lt;&lt;" />
-      <Button fx:id="toServer" layoutX="314.0" layoutY="114.0" mnemonicParsing="false" onAction="#toServer" text="&gt;&gt;&gt;&gt;" />
-      <TextField fx:id="textArea" layoutX="14.0" layoutY="424.0" prefHeight="26.0" prefWidth="518.0" />
-      <Button fx:id="send" layoutX="539.0" layoutY="424.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="127.0" text="Send" />
+      <ListView fx:id="ServerList" layoutX="433.0" layoutY="54.0" prefHeight="355.0" prefWidth="282.0" />
+      <Button fx:id="toClient" layoutX="339.0" layoutY="151.0" mnemonicParsing="false" onAction="#toClient" text="&lt;&lt;&lt;&lt;" />
+      <Button fx:id="toServer" layoutX="339.0" layoutY="119.0" mnemonicParsing="false" onAction="#toServer" text="&gt;&gt;&gt;&gt;" />
+      <TextField fx:id="textArea" layoutX="14.0" layoutY="424.0" prefHeight="26.0" prefWidth="566.0" />
+      <Button fx:id="send" layoutX="587.0" layoutY="424.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="127.0" text="Send" />
       <ComboBox fx:id="Menu" layoutX="16.0" layoutY="14.0" prefHeight="26.0" prefWidth="200.0" promptText="Menu" />
-      <Button fx:id="Refresh" layoutX="247.0" layoutY="15.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="73.0" text="Refresh" />
+      <Button fx:id="Refresh" layoutX="327.0" layoutY="54.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="73.0" text="Refresh" />
       <ListView id="textPanel" fx:id="logpane" layoutX="16.0" layoutY="457.0" opacity="0.89" prefHeight="104.0" prefWidth="678.0" />
+      <ListView fx:id="Time" layoutX="491.0" layoutY="457.0" prefHeight="104.0" prefWidth="223.0" />
+      <ProgressBar fx:id="loading" layoutX="319.0" layoutY="390.0" prefHeight="18.0" prefWidth="100.0" progress="0.0" />
    </children>
+   <cursor>
+      <Cursor fx:constant="S_RESIZE" />
+   </cursor>
 </AnchorPane>
