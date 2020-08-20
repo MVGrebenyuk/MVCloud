@@ -1,0 +1,51 @@
+Клиент умеет выполнять команды /download, /help, /upload, /clear all. В данный момент разбираюсь с JavaFX. 
+
+Вопрос в чём, есть код, который запускает изначально страницу с аутентификацией:
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("Authentification.fxml"));
+        primaryStage.setTitle("MVCloud");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
+
+
+    public static void main(String[] args) {
+
+        launch(args);
+
+    }
+}
+
+Всё работает, но я не могу понять, как после прохождения аутентификации открыть основное окно, а окно с аутентификацией закрыть. Часть кода:
+
+public void sendCommand(javafx.event.ActionEvent actionEvent) throws IOException {
+        String s1 = name.getText();
+        String p = pass.getText();
+        for (AuthList_lite list : users) {
+            String s = list.getName();
+            if (s.equalsIgnoreCase(s1)) {
+                System.out.println("Введите пароль:");
+                String p1 = list.getPass();
+                if (p.equalsIgnoreCase(p1)) {
+                    System.out.println("Поздравляем, вы успешно залогинились");
+                    user = list;
+                    os.writeObject(list);
+
+			//ВОТ ЗДЕСЬ НЕОБХОДИМО СДЕЛАТЬ ТАК, ЧТОБЫ ОТКРЫВАЛОСЬ ОСНОВНОЕ ОКНО А ОКНО АУТ. ЗАКРЫВАЛОСЬ.
+
+                } else {
+                    System.out.println("Пароль введён неверно");
+                }
+
+            } else {
+                System.out.println("Такого логина не существует");
+            }
+        }
+    }
+
+Я пометил, где необходимо сделать открытие основного окна и функционала. Понимаю, что без общего кода трудно наверное подсказать, но пожалуйста,
+подскажите хотя-бы примерное направление, куда смотреть, что искать, либо может быть какой-нибудь хороший ресурс по JavaFX. 
