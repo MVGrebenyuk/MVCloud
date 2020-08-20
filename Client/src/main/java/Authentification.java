@@ -21,13 +21,11 @@ public class Authentification implements Initializable {
     public Button auth;
     public Stage stage = new Stage();
     public TextField Path;
+    public TextField server;
+    public TextField port;
 
     private static Socket clientSocket;
-    private static BufferedReader reader;
-    private static DataInputStream in;
-    private static DataOutputStream out;
     private static AuthList_lite user;
-    private static List<AuthList_lite> users = new LinkedList<AuthList_lite>();
     private static ObjectEncoderOutputStream os;
     private static ObjectDecoderInputStream is;
 
@@ -36,13 +34,7 @@ public class Authentification implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         try {
-            clientSocket = new Socket("localhost", 8189);
-            users.add(new AuthList_lite("Max", "Pass"));
-            reader = new BufferedReader(new InputStreamReader(System.in));
-            in = new DataInputStream(clientSocket.getInputStream());
-            out = new DataOutputStream(clientSocket.getOutputStream());
-            os = new ObjectEncoderOutputStream(clientSocket.getOutputStream());
-            is = new ObjectDecoderInputStream(clientSocket.getInputStream());
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -52,6 +44,9 @@ public class Authentification implements Initializable {
     public void sendCommand(javafx.event.ActionEvent actionEvent) throws Exception {
         String s1 = name.getText();
         String p = pass.getText();
+        clientSocket = new Socket(server.getText(), Integer.parseInt(port.getText()));
+        os = new ObjectEncoderOutputStream(clientSocket.getOutputStream());
+        is = new ObjectDecoderInputStream(clientSocket.getInputStream());
         UserAuth auth = new UserAuth();
         auth.setName(s1); auth.setPass(p);
         os.writeObject(auth);

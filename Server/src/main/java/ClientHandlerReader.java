@@ -1,5 +1,6 @@
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.scene.control.TextField;
 
 
 import java.io.*;
@@ -19,11 +20,12 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
     private LinkedList<String> list = new LinkedList<>();
     private Path path;
     private UserAuth userAuth;
+    public String centralPath = ServerData.centralPath;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         try {
-            File file = new File("C:/Users/Maxim/Desktop/Max/UData.txt");
+            File file = new File(centralPath + "/UData.txt");
             FileReader fr = new FileReader(file);
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
@@ -59,7 +61,7 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
             System.out.println("Объект обнаружен");
             user = (AuthList_lite) msg;
             userName = user.getName();
-            Path userDir = Paths.get("C:/Users/Maxim/Desktop/Max");
+            Path userDir = Paths.get(centralPath);
             if (Files.notExists(userDir)) {
                 Files.createDirectory(userDir);
 
@@ -71,7 +73,7 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
             }
             System.out.println("____________________________________");
             System.out.println("Клиент " + userName + " подключился");
-            File dir = new File("C:/Users/Maxim/Desktop/Max");
+            File dir = new File(centralPath);
             for (String file : Objects.requireNonNull(dir.list())) {
                 serverList.add(file);
 
@@ -83,7 +85,7 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
                 //_____________________DOWNLOAD_______________________________
                 System.out.println("Команда от пользователя " + userName + ": " + message);
                 String[] arrFile = message.split(" ");
-                Path path = Paths.get("C:/Users/Maxim/Desktop/Max" + "/" + arrFile[1]);
+                Path path = Paths.get(centralPath + "/" + arrFile[1]);
                 FielMessage fileMsg = new FielMessage();
                 FileInputStream input = new FileInputStream(path.toFile());
                 fileMsg.setFileName(path.getFileName().toString());
@@ -98,7 +100,7 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
             } else if (message.startsWith("/delete")) {
                 //-----------------------DELETE-------------------------------
                 String[] arrFile = message.split(" ");
-                Path create = Paths.get("C:/Users/Maxim/Desktop/Max" + "/" + arrFile[1]);
+                Path create = Paths.get(centralPath + "/" + arrFile[1]);
                 Files.delete(create);
                 System.out.println("Файл " + create.getName(5) + " удалён с сервера");
                 //-----------------------DELETE------------------------------
@@ -106,10 +108,10 @@ public class ClientHandlerReader extends SimpleChannelInboundHandler<String> {
                 //-----------------------UPLOAD P1------------------------------
                 System.out.println("Команда от пользователя " + userName + ": " + message);
                 String[] arrFile = message.split(" ");
-                path = Paths.get("C:/Users/Maxim/Desktop/Max" + "/" + arrFile[1]);
+                path = Paths.get(centralPath + "/" + arrFile[1]);
             } else if(message.startsWith("/refresh")) {
                 serverList.clear();
-                File dir = new File("C:/Users/Maxim/Desktop/Max");
+                File dir = new File(centralPath);
                 for (String file : Objects.requireNonNull(dir.list())) {
                     serverList.add(file);
 

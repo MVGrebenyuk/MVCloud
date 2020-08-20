@@ -4,17 +4,18 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="437.0" prefWidth="348.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SController">
+<AnchorPane prefHeight="487.0" prefWidth="348.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SController">
    <children>
       <ImageView fitHeight="220.0" fitWidth="200.0" layoutX="74.0" layoutY="37.0" pickOnBounds="true">
          <image>
-            <Image url="netstat.png" />
+           <Image url="netstat.png" />
          </image></ImageView>
       <TextField fx:id="address" layoutX="21.0" layoutY="309.0" prefHeight="26.0" prefWidth="188.0" />
       <TextField fx:id="portu" layoutX="251.0" layoutY="309.0" prefHeight="26.0" prefWidth="82.0" />
-      <Button fx:id="startu" layoutX="91.0" layoutY="368.0" mnemonicParsing="false" onAction="#startServer" prefHeight="44.0" prefWidth="188.0" text="START SERVER" />
+      <Button fx:id="startu" layoutX="86.0" layoutY="429.0" mnemonicParsing="false" onAction="#startServer" prefHeight="44.0" prefWidth="188.0" text="START SERVER" />
       <Label layoutX="21.0" layoutY="291.0" text="Adress" />
       <Label layoutX="251.0" layoutY="291.0" text="Port" />
       <Label layoutX="146.0" layoutY="5.0" prefWidth="56.0" text="MV Server" />
+      <TextField fx:id="path1" layoutX="21.0" layoutY="358.0" prefHeight="33.0" prefWidth="310.0" text="C:\Users\Maxim\Desktop\Max" />
    </children>
 </AnchorPane>

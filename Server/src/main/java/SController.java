@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class SController implements Runnable, Initializable {
@@ -20,6 +21,7 @@ public class SController implements Runnable, Initializable {
     public TextField address;
     public TextField portu;
     public Button startu;
+    public TextField path1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)  {
@@ -57,6 +59,7 @@ public class SController implements Runnable, Initializable {
     public void startServer(javafx.event.ActionEvent actionEvent){
         ServerData.adress = address.getText();
         ServerData.port = portu.getText();
+        ServerData.centralPath = path1.getText();
         new Thread(new Server()).start();
     }
 
